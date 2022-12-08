@@ -15,6 +15,8 @@ backgroundImage: url('background.jpg')
 
 Write C# code analyzers
 
+slides at: https://github.com/tomuxmon/code-with-roslyn
+
 ---
 
 # What is Roslyn
