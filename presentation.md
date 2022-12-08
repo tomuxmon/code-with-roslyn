@@ -100,6 +100,8 @@ also include editor config settings.
 
 ---
 
+# Minimal analyzer - outer view
+
 ```csharp
 using System.Collections.Immutable;
 using System.Linq;
@@ -112,36 +114,55 @@ namespace min_analyzer {
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class SomeAnalyzer : DiagnosticAnalyzer {
+        // ...snip... 
+    }
+}
+```
 
-        private static readonly DiagnosticDescriptor someDescriptor = new(
-            "S01", "Method body token count",
-            "Method body contains '{0}' tokens. Reduce it to 40!",
-            "Security", DiagnosticSeverity.Warning, true);
+---
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(someDescriptor);
+# Minimal analyzer - diagnostic descriptor
 
-        public override void Initialize(AnalysisContext ctx) {
-            ctx.EnableConcurrentExecution();
-            ctx.ConfigureGeneratedCodeAnalysis(
-                GeneratedCodeAnalysisFlags.Analyze |
-                GeneratedCodeAnalysisFlags.ReportDiagnostics);
-            ctx.RegisterSyntaxNodeAction(
-                AnalyzeMethodSyntaxNode,
-                SyntaxKind.MethodDeclaration);
-        }
+```csharp
+private static readonly DiagnosticDescriptor someDescriptor = new(
+    "S01", "Method body token count",
+    "Method body contains '{0}' tokens. Reduce it to 40!",
+    "Security", DiagnosticSeverity.Warning, true);
 
-        private void AnalyzeMethodSyntaxNode(SyntaxNodeAnalysisContext ctx) {
-            if (ctx.Node is MethodDeclarationSyntax myx) {
-                var node_count = myx.Body.DescendantNodes().Count();
-                if (node_count > 40) {
-                    ctx.ReportDiagnostic(
-                        Diagnostic.Create(
-                            someDescriptor,
-                            myx.Body.GetLocation(),
-                            node_count));
-                }
-            }
+public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+    ImmutableArray.Create(someDescriptor);
+```
+
+---
+
+# Minimal analyzer - register action
+
+```csharp
+public override void Initialize(AnalysisContext ctx) {
+    ctx.EnableConcurrentExecution();
+    ctx.ConfigureGeneratedCodeAnalysis(
+        GeneratedCodeAnalysisFlags.Analyze |
+        GeneratedCodeAnalysisFlags.ReportDiagnostics);
+    ctx.RegisterSyntaxNodeAction(
+        AnalyzeMethodSyntaxNode,
+        SyntaxKind.MethodDeclaration);
+}
+```
+
+---
+
+# Minimal analyzer - report diagnostic
+
+```csharp
+private void AnalyzeMethodSyntaxNode(SyntaxNodeAnalysisContext ctx) {
+    if (ctx.Node is MethodDeclarationSyntax myx) {
+        var node_count = myx.Body.DescendantNodes().Count();
+        if (node_count > 40) {
+            ctx.ReportDiagnostic(
+                Diagnostic.Create(
+                    someDescriptor,
+                    myx.Body.GetLocation(),
+                    node_count));
         }
     }
 }
@@ -149,16 +170,14 @@ namespace min_analyzer {
 
 ---
 
-
 # Usefull tools
 
 * [sharplab.io](https://sharplab.io/)
-* Avalonia ILSpy (code generation check)
 * Visual Studio extension
 
 ---
 
-# Demo time!
+# Demo time
 
 * `retrun Task.CompletedTask();`
 * `Task.Wait();` [Obsolete] -> replace with `ConfigureAwait(false).GetAwaiter().GetResult();`
