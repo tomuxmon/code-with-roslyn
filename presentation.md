@@ -2,7 +2,11 @@
 marp: true
 theme: gaia
 _class: lead
-backgroundColor: #FFF
+style: |
+    section{
+        color: #002030;
+    }
+backgroundImage: url('background.jpg')
 ---
 
 ![bg left:40% 80%](roslyn_logo.png)
