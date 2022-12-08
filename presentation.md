@@ -266,3 +266,9 @@ private static async Task<Document> FixAsync(
 * [Meziantou.Analyzer](https://www.nuget.org/packages/Meziantou.Analyzer/)
 * [SonarAnalyzer.CSharp](https://www.nuget.org/packages/SonarAnalyzer.CSharp/)
 * know something else? Shout it at me :)
+
+---
+
+# Thank you for listening 🎇
+
+Now Questions!
