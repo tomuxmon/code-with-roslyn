@@ -110,12 +110,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace min_analyzer {
+namespace min_analyzer;
 
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SomeAnalyzer : DiagnosticAnalyzer {
-        // ...snip... 
-    }
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class SomeAnalyzer : DiagnosticAnalyzer {
+    // ...snip... 
 }
 ```
 
@@ -165,6 +164,82 @@ private void AnalyzeMethodSyntaxNode(SyntaxNodeAnalysisContext ctx) {
                     node_count));
         }
     }
+}
+```
+
+---
+
+# Minimal fixer - outer view
+
+```csharp
+using System.Collections.Immutable;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CSharp;
+
+namespace min_fixer;
+
+[ExportCodeFixProvider(LanguageNames.CSharp)]
+public class SomeFixer : CodeFixProvider {
+    // ...snip...
+}
+```
+
+---
+
+# Minimal fixer - fix what?
+
+```csharp
+// The name as it will appear in the light bulb menu
+private const string FixTitle = "Reduce method size (start it from scratch)";
+
+public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("S01");
+
+public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+```
+
+---
+
+# Minimal fixer - register fix
+
+```csharp
+public override async Task RegisterCodeFixesAsync(CodeFixContext ctx) {
+    var root = await ctx.Document.GetSyntaxRootAsync(ctx.CancellationToken);
+    var diagnostic = ctx.Diagnostics.First();
+    var methodSyntax = root.
+        FindToken(diagnostic.Location.SourceSpan.Start).
+        Parent.
+        AncestorsAndSelf().
+        OfType<MethodDeclarationSyntax>().
+        First();
+
+    ctx.RegisterCodeFix(
+        CodeAction.Create(
+            title: FixTitle,
+            createChangedDocument: c => FixAsync(ctx.Document, methodSyntax, c),
+            equivalenceKey: FixTitle),
+        diagnostic);
+}
+```
+
+---
+
+# Minimal fixer - replace operation
+
+```csharp
+private static async Task<Document> FixAsync(
+    Document doc, 
+    MethodDeclarationSyntax methodSyntax, 
+    CancellationToken ct
+) {
+    var oldRoot = await doc.GetSyntaxRootAsync(ct);
+    var newRoot = oldRoot.ReplaceNode(methodSyntax.Body, SyntaxFactory.Block());
+    return doc.WithSyntaxRoot(newRoot);
 }
 ```
 

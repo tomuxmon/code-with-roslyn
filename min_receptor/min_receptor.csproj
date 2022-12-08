@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\min_analyzer\min_analyzer.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\min_fixer\min_fixer.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
 
 </Project>
