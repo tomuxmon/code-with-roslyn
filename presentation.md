@@ -254,10 +254,6 @@ private static async Task<Document> FixAsync(
 
 # Demo time
 
-* `retrun Task.CompletedTask();`
-* `Task.Wait();` [Obsolete] -> replace with `ConfigureAwait(false).GetAwaiter().GetResult();`
-* calculate cognitive load
-
 ---
 
 # Ready to use Analyzers
