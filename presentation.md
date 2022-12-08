@@ -250,11 +250,21 @@ private static async Task<Document> FixAsync(
 # Usefull tools
 
 * [sharplab.io](https://sharplab.io/)
-* Visual Studio extension
+* [Visual Studio extension](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/syntax-visualizer?tabs=csharp)
 
 ---
 
 # Demo time
+
+---
+
+# Articles about Roslyn
+
+* [Tutorial: Write your first analyzer and code fix](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/tutorials/how-to-write-csharp-analyzer-code-fix)
+* [Writing a Roslyn analyzer](https://www.meziantou.net/writing-a-roslyn-analyzer.htm)
+* [How to write a Roslyn Analyzer](https://devblogs.microsoft.com/dotnet/how-to-write-a-roslyn-analyzer/)
+* [Roslyn analyzers and code-aware library for ImmutableArrays](https://learn.microsoft.com/en-us/visualstudio/extensibility/roslyn-analyzers-and-code-aware-library-for-immutablearrays?view=vs-2022)
+* [C# - Adding a Code Fix to Your Roslyn Analyzer](https://learn.microsoft.com/en-us/archive/msdn-magazine/2015/february/csharp-adding-a-code-fix-to-your-roslyn-analyzer)
 
 ---
 
